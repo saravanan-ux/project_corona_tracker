@@ -26,6 +26,11 @@ jobs:
         node-version: 18.x
         cache: 'npm'
 
+    # Set OpenSSL legacy provider to avoid build errors
+    - name: Set OpenSSL legacy provider
+      run: |
+        export NODE_OPTIONS=--openssl-legacy-provider
+
     # Install dependencies
     - name: Install dependencies
       run: npm ci
