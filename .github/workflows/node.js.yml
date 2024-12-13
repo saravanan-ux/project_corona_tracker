@@ -23,13 +23,12 @@ jobs:
     - name: Setup Node.js
       uses: actions/setup-node@v4
       with:
-        node-version: 18.x
+        node-version: "0.1.0"
         cache: 'npm'
 
-    # Set OpenSSL legacy provider to avoid build errors
-    - name: Set OpenSSL legacy provider
-      run: |
-        export NODE_OPTIONS=--openssl-legacy-provider
+    # Set OpenSSL legacy provider for all Node.js commands
+    - name: Set NODE_OPTIONS environment variable
+      run: echo "NODE_OPTIONS=--openssl-legacy-provider" >> $GITHUB_ENV
 
     # Install dependencies
     - name: Install dependencies
