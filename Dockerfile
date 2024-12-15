@@ -1,26 +1,20 @@
-# Set the working directory
-WORKDIR /app
+# Use the official Node.js 16 image as the base image
+FROM node:16-alpine
 
-# Copy the package.json and package-lock.json to the container
+# Set the working directory inside the container
+WORKDIR /usr/src/app
+
+# Copy package.json and package-lock.json to the working directory
 COPY package*.json ./
 
 # Install dependencies
-RUN npm ci
+RUN npm install --production
 
-# Copy the rest of the application code to the container
+# Copy the rest of the application code to the working directory
 COPY . .
 
-# Build the React application
-RUN npm run build
-server {
-    listen 80;
-    server_name _;
+# Expose the port your application will run on
+EXPOSE 3000
 
-    root /usr/share/nginx/html;
-    index index.html;
-
-    location / {
-        try_files $uri /index.html;
-    }
-}
-COPY nginx.conf /etc/nginx/conf.d/default.conf
+# Define the command to run your application
+CMD ["node", "app.js"]
