@@ -23,7 +23,7 @@ jobs:
     - name: Setup Node.js
       uses: actions/setup-node@v4
       with:
-        node-version:  "0.1.0"
+        node-version:  "16"
         cache: 'npm'
 
     # Set OpenSSL legacy provider for Node.js globally
