@@ -1,20 +1,24 @@
-# Use the official Node.js 16 image as the base image
-FROM node:16-alpine
-
 # Set the working directory inside the container
-WORKDIR /usr/src/app
+WORKDIR /app
 
-# Copy package.json and package-lock.json to the working directory
-COPY package*.json ./
+# Set environment variable for legacy OpenSSL provider
+ENV NODE_OPTIONS=--openssl-legacy-provider
+
+# Copy package.json and package-lock.json first (to cache dependencies)
+COPY package.json package-lock.json ./
 
 # Install dependencies
-RUN npm install --production
+RUN npm ci
 
-# Copy the rest of the application code to the working directory ddd
+# Copy the rest of the application code
 COPY . .
 
-# Expose the port your application will run on
+# Build the React application
+RUN npm run build
+
+# Expose the port the app will run on
 EXPOSE 3000
 
-# Define the command to run your application
-CMD ["node", "app.js"]
+# Serve the build using a static server
+RUN npm install -g serve
+CMD ["serve", "-s", "build"]
