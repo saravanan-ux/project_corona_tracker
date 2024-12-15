@@ -43,7 +43,7 @@ jobs:
       run: npm test
 
     # Log in to Docker Hub
-    - name: Log in to Docker Hub
+    - name: Log in to Docker Hub to configure
       uses: docker/login-action@v2
       with:
         username: ${{ secrets.DOCKER_USERNAME }}
