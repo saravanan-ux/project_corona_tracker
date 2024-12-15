@@ -1,6 +1,3 @@
-# Use the official Node.js image as the base image for building
-FROM node:18 AS build
-
 # Set the working directory
 WORKDIR /app
 
@@ -15,15 +12,15 @@ COPY . .
 
 # Build the React application
 RUN npm run build
+server {
+    listen 80;
+    server_name _;
 
-# Use the official Nginx image to serve the built application
-FROM nginx:stable-alpine
+    root /usr/share/nginx/html;
+    index index.html;
 
-# Copy the built React app from the previous stage to the Nginx web root
-COPY --from=build /app/build /usr/share/nginx/html
-
-# Expose port 80 for the container
-EXPOSE 80
-
-# Start Nginx when the container starts
-CMD ["nginx", "-g", "daemon off;"]
+    location / {
+        try_files $uri /index.html;
+    }
+}
+COPY nginx.conf /etc/nginx/conf.d/default.conf
